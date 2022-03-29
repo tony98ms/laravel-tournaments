@@ -1,1 +1,1 @@
-# **COMING SOOM: LARAVEL TOURNAMENTS**
+# **Coming soon: Laravel Tournaments**
