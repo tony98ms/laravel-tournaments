@@ -1,0 +1,66 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateTournamentsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create(config('laravel-tournaments.table_names.tournaments', 'tournaments'), function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('slug');
+            $table->string('description');
+            $table->unsignedBigInteger('rounds');
+            $table->unsignedBigInteger('participants_count');
+            $table->enum('tournament_type', ['league']);
+            $table->enum('group_stage', ['local', 'local-visita'])->default('local');
+            $table->enum('status', ['pending', 'started', 'completed', 'canceled'])->default('pending');
+            $table->unsignedBigInteger('promotions_division_id')->nullable();
+            $table->unsignedBigInteger('descents_division_id')->nullable();
+            $table->unsignedBigInteger('promotions_count')->default(0);
+            $table->unsignedBigInteger('descents_count')->default(0);
+
+            $table->unsignedBigInteger('admin_id');
+            $table->foreign('admin_id')->references('id')
+                ->on(config('laravel-tournaments.table_names.users', 'users'))
+                ->onDelete('CASCADE');
+
+            $table->unsignedBigInteger('division_id')->nullable();
+            $table->foreign('division_id')
+                ->references('id')
+                ->on(config('laravel-tournaments.table_names.divisions', 'divisions'))
+                ->onDelete('SET NULL');
+
+            $table->foreign('promotions_division_id')
+                ->references('id')
+                ->on(config('laravel-tournaments.table_names.divisions', 'divisions'))
+                ->onDelete('SET NULL');
+
+            $table->foreign('descents_division_id')
+                ->references('id')
+                ->on(config('laravel-tournaments.table_names.divisions', 'divisions'))
+                ->onDelete('SET NULL');
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists(config('laravel-tournaments.table_names.tournaments'));
+    }
+}

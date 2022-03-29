@@ -1,0 +1,62 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateFixturesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create(config('laravel-tournaments.table_names.fixtures', 'fixtures'), function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('round');
+            $table->unsignedBigInteger('tournament_id');
+            $table->foreign('tournament_id')
+                ->references('id')
+                ->on(config('laravel-tournaments.table_names.tournaments', 'tournaments'))
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('local_id');
+            $table->foreign('local_id')
+                ->references('id')
+                ->on(config('laravel-tournaments.table_names.teams', 'teams'))
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('visitor_id');
+            $table->foreign('visitor_id')
+                ->references('id')
+                ->on(config('laravel-tournaments.table_names.teams', 'teams'))
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('local_goal')->nullable();
+            $table->unsignedBigInteger('visitor_goal')->nullable();
+            $table->enum('phase', ['one-way', 'back']);
+            $table->enum('results', ['win', 'draw'])->nullable();
+            $table->enum('status', ['pending', 'enabled ', 'completed', 'canceled', 'disabled'])->default('pending');
+            $table->unsignedBigInteger('winner_id')->nullable();
+            $table->unsignedBigInteger('loser_id')->nullable();
+            $table->foreign('winner_id')
+                ->references('id')
+                ->on(config('laravel-tournaments.table_names.teams', 'teams'))
+                ->onDelete('cascade');
+            $table->foreign('loser_id')
+                ->references('id')
+                ->on(config('laravel-tournaments.table_names.teams', 'teams'))
+                ->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists(config('laravel-tournaments.table_names.fixtures', 'fixtures'));
+    }
+}

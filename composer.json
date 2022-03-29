@@ -1,0 +1,44 @@
+{
+    "name": "tonystore/laravel-tournaments",
+    "description": "Tournament generator for laravel applications.",
+    "type": "package",
+    "require": {
+        "php": "^7.3|^8.0|^8.1",
+        "ddzobov/laravel-pivot-softdeletes": "^2.1",
+        "illuminate/auth": "^7.0|^8.0|^9.0",
+        "illuminate/database": "^7.0|^8.0|^9.0",
+        "tonystore/laravel-round-robin": "^0.1"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Tonystore\\LaravelTournaments\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.4"
+    },
+    "authors": [
+        {
+            "name": "Jean Anthony Medina Sandoval",
+            "email": "thony918@outlook.com",
+            "homepage": "https://github.com/tony98ms",
+            "role": "Developer"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tonystore\\LaravelTournaments\\LaravelTournamentProvider"
+            ],
+            "aliases": {
+                "LaravelTournament": "Tonystore\\LaravelTournaments\\Facade\\LaravelTournamentFacade"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}
